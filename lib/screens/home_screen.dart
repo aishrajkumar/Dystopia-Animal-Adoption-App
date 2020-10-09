@@ -1,11 +1,6 @@
-import 'package:dystopia_flutter_app/screens/pet_list.dart';
 import 'package:dystopia_flutter_app/widgets/pet_category.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:dystopia_flutter_app/widgets/searchbox.dart';
-import 'package:dystopia_flutter_app/widgets/platform_widgets.dart';
-import 'package:dystopia_flutter_app/screens/pet_list.dart';
-
 
 class HomePage2 extends StatefulWidget {
   @override
@@ -13,7 +8,43 @@ class HomePage2 extends StatefulWidget {
 }
 
 class _HomePage2State extends State<HomePage2> {
-
+  Padding buildSearchBox() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 40.0),
+      child: Container(
+        height: 40,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(
+            Radius.circular(30),
+          ),
+          color: Colors.white,
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.all(
+            Radius.circular(30),
+          ),
+          child: RaisedButton(
+            onPressed: () {},
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Icon(Icons.search),
+                Text(
+                  "Search for a pet...",
+                  style: TextStyle(
+                    fontSize: 15,
+                  ),
+                ),
+                Opacity(
+                  opacity: 0.0,
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
   SliverToBoxAdapter petCategories() {
     List<PetCategory> _tiles = [
@@ -30,7 +61,6 @@ class _HomePage2State extends State<HomePage2> {
         name: "Others",
       ),
     ];
-
     return SliverToBoxAdapter(
       child: Container(
         color: Color(0xFFedf3eb),
@@ -60,6 +90,7 @@ class _HomePage2State extends State<HomePage2> {
   SliverToBoxAdapter petList() {
     return SliverToBoxAdapter(
       child: Container(
+        height: MediaQuery.of(context).size.height / 3,
         margin: EdgeInsets.symmetric(
           horizontal: 20,
           vertical: 5,
@@ -70,28 +101,32 @@ class _HomePage2State extends State<HomePage2> {
         ),
         decoration: BoxDecoration(
           gradient: LinearGradient(colors: [
-            Color(0xFFb9725d),
-            Color(0xFFe2c5bd),
+            Color(0xFFbbc7b9),
+            Color(0xFFe3e5e2),
           ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
           borderRadius: BorderRadius.circular(30),
         ),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Flexible(
               child: Text(
-                "Can\'t look after your pet due to unforeseen circumstances? List your pet today and let us help you find their next owner.",
+                "Can\'t look after your pet due to unforeseen reasons? List your pet today and let us help you find their next owner.",
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 15,
                 ),
               ),
             ),
             SizedBox(
-              height: 20,
+              height: 15,
             ),
-            FlatButton.icon(
-                height: 50,
+            Container(
+              decoration: BoxDecoration(
                 color: Color(0xFF875433),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: FlatButton.icon(
+                height: 30,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
@@ -102,10 +137,10 @@ class _HomePage2State extends State<HomePage2> {
                 ),
                 label: Text(
                   "Start now",
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                )),
+                  style: TextStyle(fontSize: 15, color: Colors.white),
+                ),
+              ),
+            )
           ],
         ),
       ),
@@ -189,34 +224,39 @@ class _HomePage2State extends State<HomePage2> {
                 child: CustomScrollView(
                   physics: BouncingScrollPhysics(),
                   slivers: [
-                      petCategories(),
-                      SliverPadding(
-                        padding: EdgeInsets.symmetric(
-                          vertical: 5,
-                        ),
+                    SliverPadding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 30,
                       ),
-                      petList(),
-                      // scroll helper
-                      SliverToBoxAdapter(
-                        child: Container(
-                          height: 50,
-                          color: Colors.transparent,
-                        ),
-                      )
-                    ],
-                  ),
+                    ),
+                    petCategories(),
+                    SliverPadding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 25,
+                      ),
+                    ),
+                    petList(),
+                    // scroll helper
+                    SliverToBoxAdapter(
+                      child: Container(
+                        height: 180,
+                        color: Colors.transparent,
+                      ),
+                    )
+                  ],
                 ),
-              ],
-            ),
-            Positioned(
-              top: (MediaQuery.of(context).size.height + 30) / 2.5,
-              width: MediaQuery.of(context).size.width,
-              child: Align(
-                child: buildSearchBox(),
               ),
+            ],
+          ),
+          Positioned(
+            top: (MediaQuery.of(context).size.height + 30) / 2.5,
+            width: MediaQuery.of(context).size.width,
+            child: Align(
+              child: buildSearchBox(),
             ),
-          ],
-        ),
-      );
-    }
+          ),
+        ],
+      ),
+    );
   }
+}
