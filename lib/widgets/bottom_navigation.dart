@@ -7,6 +7,7 @@ import 'package:dystopia_flutter_app/screens/pet_results.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../screens/home_screen.dart';
 
@@ -23,11 +24,12 @@ class _BottomNavigationState extends State<BottomNavigation>
   AnimationController _animationController;
   Animation<double> animation;
   CurvedAnimation curve;
-
+  bool disposed = false;
   @override
   void dispose() {
-    super.dispose();
+    disposed = true;
     _animationController.dispose();
+    super.dispose();
   }
 
   @override
@@ -53,10 +55,12 @@ class _BottomNavigationState extends State<BottomNavigation>
       end: 1,
     ).animate(curve);
 
-    Future.delayed(
-      Duration(seconds: 1),
-      () => _animationController.forward(),
-    );
+    Future.delayed(Duration(seconds: 1), () {
+      if (disposed) {
+        return;
+      }
+      _animationController.forward();
+    });
   }
 
   List iconList = <IconData>[
@@ -76,6 +80,11 @@ class _BottomNavigationState extends State<BottomNavigation>
   ];
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(
+      context,
+      designSize: Size(414, 896),
+      allowFontScaling: true,
+    );
     return Scaffold(
       extendBody: true,
       resizeToAvoidBottomInset: true,
@@ -91,11 +100,12 @@ class _BottomNavigationState extends State<BottomNavigation>
             _animationController.forward();
           },
           child: CircleAvatar(
-            backgroundColor: Color(0xFFb9815d),
-            radius: 15,
+            backgroundColor: Theme.of(context).colorScheme.secondaryVariant,
+            radius: 35.h,
             child: Image.asset(
               'assets/images/pet_logo.png',
-              color: Colors.black,
+              color: Theme.of(context).colorScheme.onSecondary,
+              //  color: Colors.black,
             ),
           ),
         ),
@@ -103,21 +113,23 @@ class _BottomNavigationState extends State<BottomNavigation>
       floatingActionButtonLocation: FixedDockedFabLocation(context: context),
       bottomNavigationBar: AnimatedBottomNavigationBar(
         icons: iconList,
-        height: 50,
-        iconSize: 20,
+        height: 80.h,
+        iconSize: 35.h,
         activeIndex: _bottomNavIndex,
         elevation: 10,
-        backgroundColor: Color(0xFFedf3eb),
-        activeColor: Color(0xFFb9815d),
-        splashColor: Color(0xFF875433),
-        inactiveColor: Colors.grey,
+        backgroundColor: Theme.of(context).backgroundColor, //Color(0xFFedf3eb),
+        activeColor: Theme.of(context).colorScheme.secondary,
+        splashColor: Theme.of(context).splashColor,
+        inactiveColor: Theme.of(context).disabledColor,
         notchAndCornersAnimation: animation,
         splashSpeedInMilliseconds: 300,
         notchSmoothness: NotchSmoothness.softEdge,
         gapLocation: GapLocation.end,
         leftCornerRadius: 0,
         rightCornerRadius: 0,
-        onTap: (index) => setState(() => _bottomNavIndex = index),
+        onTap: (index) => {
+          if (this.mounted) {setState(() => _bottomNavIndex = index)}
+        },
       ),
     );
   }

@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -27,6 +26,8 @@ abstract class AuthBase {
 
   Future<User> signInWithEmailAndPassword(String email, String password);
   Future<User> createUserWithEmailIdAndPassword(String email, String password);
+
+  Future<void> resetPassword(String email);
 }
 
 class Auth implements AuthBase {
@@ -65,13 +66,13 @@ class Auth implements AuthBase {
         );
         return _userFromFirebase(authResult.user);
       } else {
-        throw PlatformException(
+        throw FirebaseAuthException(
           code: 'ERROR_MISSING_GOOGLE_AUTH_TOKEN',
           message: 'Missing google auth token',
         );
       }
     } else {
-      throw PlatformException(
+      throw FirebaseAuthException(
         code: 'ERROR_ABORTED_BY_USER',
         message: 'Sign in aborted by user',
       );
@@ -91,7 +92,7 @@ class Auth implements AuthBase {
           (await _firebaseAuth.signInWithCredential(credential)).user;
       return _userFromFirebase(user);
     } else {
-      throw PlatformException(
+      throw FirebaseAuthException(
         code: 'ERROR_ABORTED_BY_USER',
         message: 'Sign in aborted by user',
       );
@@ -118,9 +119,14 @@ class Auth implements AuthBase {
       await authResult.user.sendEmailVerification();
       return _userFromFirebase(authResult.user);
     } catch (e) {
-      print("An error occured while trying to send email        verification");
+      print("An error occured while trying to send email verification");
       print(e.message);
     }
+  }
+
+  @override
+  Future<void> resetPassword(String email) async {
+    await _firebaseAuth.sendPasswordResetEmail(email: email);
   }
 
   @override
