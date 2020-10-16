@@ -1,9 +1,8 @@
 import 'package:dystopia_flutter_app/screens/account.dart';
+import 'package:dystopia_flutter_app/screens/filter_screen.dart';
+import 'package:dystopia_flutter_app/screens/list_of_pets.dart';
 import 'package:dystopia_flutter_app/screens/saved_page.dart';
-import 'package:dystopia_flutter_app/screens/pet_list.dart';
 import 'package:flutter/material.dart';
-import 'package:dystopia_flutter_app/screens/pet_results.dart';
-
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 
 import 'package:flutter/services.dart';
@@ -101,7 +100,7 @@ class _BottomNavigationState extends State<BottomNavigation>
           },
           child: CircleAvatar(
             backgroundColor: Theme.of(context).colorScheme.secondaryVariant,
-            radius: 35.h,
+            radius: 25.h,
             child: Image.asset(
               'assets/images/pet_logo.png',
               color: Theme.of(context).colorScheme.onSecondary,
@@ -114,7 +113,7 @@ class _BottomNavigationState extends State<BottomNavigation>
       bottomNavigationBar: AnimatedBottomNavigationBar(
         icons: iconList,
         height: 80.h,
-        iconSize: 35.h,
+        iconSize: 25.h,
         activeIndex: _bottomNavIndex,
         elevation: 10,
         backgroundColor: Theme.of(context).backgroundColor, //Color(0xFFedf3eb),

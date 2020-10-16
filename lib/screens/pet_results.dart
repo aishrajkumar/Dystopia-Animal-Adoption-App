@@ -58,7 +58,7 @@ class PetResultScreenState extends State<PetResultScreen> {
                 message: "Chat",
                 child: IconButton(
                     icon: Icon(
-                      Icons.chat_bubble_outline_rounded,
+                      Icons.chat_bubble,
                       color: Colors.white,
                     ),
                     color: Colors.black,
@@ -117,9 +117,9 @@ class PetResultScreenState extends State<PetResultScreen> {
                         controller: new ScrollController(),
                         padding: EdgeInsets.all(5),
                         children: <Widget>[
-                          filterCategory("Female"),
-                          filterCategory("Golden\nRetriever"),
-                          filterCategory("3 months"),
+                          filterCategory("Female", false),
+                          filterCategory("Golden\nRetriever",false),
+                          filterCategory("3 months", false),
                         ],
                       ),
                     ),
